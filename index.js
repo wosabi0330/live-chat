@@ -1,16 +1,18 @@
-import express from 'express'
+import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const app = express();
 
-app.use(express.static('public'))
+const filename = fileURLToPath(import.meta.url)
+const dirname = path.dirname(filename)
 
-app.get('/chat', (req, res) => {
-    res.send('welcome')
-})
+app.use(express.static(path.join(dirname,'public')))
+app.use(express.urlencoded({extended: true}))
 
-
-app.get('/wow', (req, res) => {
-    res.send('welcome')
+app.post('/join', (req, res) => {
+    const nickname = req.body.nickname;
+    res.send('welcome' + nickname)
 })
 
 
