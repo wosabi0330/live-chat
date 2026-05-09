@@ -9,6 +9,7 @@ const dirname = path.dirname(filename)
 
 app.use(express.static(path.join(dirname,'public')))
 app.use(express.urlencoded({extended: true}))
+app.use(express.json());
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(dirname, 'views'));
@@ -24,6 +25,18 @@ app.post('/join', (req, res) => {
     })
     res.render('chat', { nickname });
 })
+
+app.post('/send',  (req, res) => {
+    const msg = req.body.messageContent;
+    const nickname = req.body.nickname;
+    console.log(msg, ',  ', nickname);
+    data.push({
+        nickname: nickname,
+        message: msg,
+        datetime: new Date()
+    })
+    res.send('OK')
+});
 
 
 app.listen(3000,()=> {

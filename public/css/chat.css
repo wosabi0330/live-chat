@@ -10,7 +10,16 @@
     background-color: cadetblue;
 }
 
+.send-form {
+    margin: 10px;
+}
+
 .send-form input {
+    width: 80%;
     font-size: 2rem;
     min-width: 10%;
+}
+
+.send-form button {
+    font-size: 2rem;
 }
