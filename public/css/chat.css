@@ -8,6 +8,8 @@
     width: 100%;
     height: 85vh;
     background-color: cadetblue;
+    padding: 10px;
+    overflow-y: auto;
 }
 
 .send-form {
@@ -22,4 +24,12 @@
 
 .send-form button {
     font-size: 2rem;
+}
+
+.myself-msg {
+    color: green;
+}
+
+.system-msg {
+    color: aliceblue;
 }
