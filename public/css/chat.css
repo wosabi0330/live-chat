@@ -33,3 +33,8 @@
 .system-msg {
     color: aliceblue;
 }
+
+.chat-datetime{
+    color: aqua;
+    font-size: 0.7rem;;
+}

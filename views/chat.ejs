@@ -10,10 +10,10 @@
 
 <body>
     <div class="main">
-        <div class="chat-history" id="chatHistory"></div>
+        <div class="chat-history" id="chatHistory"></div> 
         <div class="send-form">
             <form action="" id="sendForm">
-                <input type="text" id="message">
+                <input type="text" id="message" autocapitalize="off">
                 <button type="submit">Send</button>
             </form>
         </div>
@@ -26,6 +26,7 @@
                 sendMessage();
             })
             poll();
+            updateDateTimeDisplay();
         });
 
         function getMessageClass(hisMessage) {
@@ -46,7 +47,8 @@
             const bottomGap = chatHistoryElem.scrollHeight - chatHistoryElem.scrollTop - chatHistoryElem.clientHeight;
             // 2. populate data into chat history section
             document.getElementById('chatHistory').innerHTML = data
-            .map(his => `<p class="${getMessageClass(his)}">${his.nickname}:  ${his.message} </p>`)
+
+            .map(his => `<p class="${getMessageClass(his)}"><span class="chat-datetime">${displayedDateTime(new Date(his.datetime))}</span><br>${his.nickname}:  ${his.message} </p>`)
             .join('');
             if (bottomGap < 5) {
             chatHistoryElem.scrollTop = chatHistoryElem.scrollHeight;
@@ -54,7 +56,7 @@
             // 3. set the next run
             setTimeout(poll, 1000);
         }
-ç
+
         function sendMessage() {
             const message = document.getElementById('message').value;
             fetch('/send ', {
@@ -69,6 +71,40 @@
                    
             });
             document.getElementById('message').value = '';
+        }
+        
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
+        function displayedDateTime(dateObj) {
+            const nowObj = new Date();
+            if (nowObj.getTime () - dateObj.getTime() < 60*1000) {
+               return 'Now';
+            }
+            
+            if (nowObj.getTime () - dateObj.getTime() < 60*60*1000) {
+                const minutes = Math.floor((nowObj.getTime() - dateObj.getTime())/1000/60);
+                return `${minutes} minutes ago`;
+
+            }
+            if(nowObj.getFullYear() === dateObj.getFullYear()
+                && nowObj.getMonth() === dateObj.getMonth()
+                && nowObj.getMonth() === dateObj.getMonth()) {
+
+                return dateObj.getHours() + ';' + dateObj.getMinutes();
+            }
+            return `${dateObj.getDate()} ${months [dateObj.getMonth()]} ${dateObj.getHours()}:${dateObj.getMinutes()}`;
+
+
+
+        }
+
+        function updateDateTimeDisplay(){
+            document.querySelectorAll('span.chat-dateime').forEach(sp => {
+                const thenDatetime = new Date(sp.dataset['ts'])
+                const displayedDateTime = displayedDateTime(thenDatetime);
+                sp.innerHTML = displayedDateTime;
+            });
+
+            setTimeout(updateDateTimeDisplay, 30*1000)
         }
     </script>
 </body>

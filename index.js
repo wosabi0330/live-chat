@@ -14,10 +14,13 @@ app.use(express.json());
 app.set('view engine', 'ejs');
 app.set('views', path.join(dirname, 'views'));
 
+let massageID = 1
 const data = [];
+const users = []
 
 app.post('/join', (req, res) => {
     const nickname = req.body.nickname;
+    
     data.push({
         nickname: 'System' ,
         message: 'Welcome ' + nickname,
